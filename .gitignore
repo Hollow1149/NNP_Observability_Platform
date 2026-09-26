@@ -1,0 +1,32 @@
+# Python Stuff
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# VENV Stuff
+.venv/
+venv/
+env/
+ENV/
+
+# Secret Stuff
+.env
+.env.*
+!.env.example
+
+# Testing Stuff
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Local Database Stuff
+*.db
+*.sqlite
+*.sqlite3
+
+# Random Stuff
+scratch/
