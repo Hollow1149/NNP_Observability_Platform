@@ -1,13 +1,23 @@
 [project]
-name = "nnp-observability-platform"
+name = "nnp-observability"
 version = "0.1.0"
-description = "Add your description here"
+description = "Real Time Log-Based Anomaly Detection For Microservices"
 readme = "README.md"
 authors = [
   { name = "Hollow", email = "180569356+Hollow1149@users.noreply.github.com" },
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+  "fastapi[standard]>=0.011.0",
+  "sqlalchemy>=2.0.28",
+  "scikit-learn>=1.4.0",
+  "torch>=2.2.0",
+  "numpy>=1.26.0",
+  "psutil>=5.9.8",
+  "prometheus-client>=0.20.0",
+  "requests>=2.31.0",
+  "pydantic-settings>=2.15.0",
+]
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
