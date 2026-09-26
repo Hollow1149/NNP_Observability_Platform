@@ -27,3 +27,6 @@ htmlcov/
 *.db
 *.sqlite
 *.sqlite3
+
+# Random Stuff
+scratch/
