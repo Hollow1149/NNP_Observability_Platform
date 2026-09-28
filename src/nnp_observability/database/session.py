@@ -22,9 +22,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-# TODO: When model is ready use it to initialize the db
-def init_db():
-    some: bool = True
-    yield some
