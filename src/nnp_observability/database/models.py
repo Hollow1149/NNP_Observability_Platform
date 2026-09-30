@@ -38,7 +38,7 @@ class TelemetryMetric(Base):
 
     __table_args__: tuple[PrimaryKeyConstraint, Index] = (
         PrimaryKeyConstraint("id"),
-        Index("ix_metric_data", "id", "timestamp", "service_id"),
+        Index("ix_metric_data", "timestamp", "service_id"),
     )
 
 
@@ -67,7 +67,6 @@ class LogEntry(Base):
         PrimaryKeyConstraint("id"),
         Index(
             "ix_log_data",
-            "id",
             "timestamp",
             "service_id",
             "level",
@@ -105,9 +104,7 @@ class AnomalyEvent(Base):
             ondelete="SET NULL",
             name="fk_anomalyEvent_Incident",
         ),
-        Index(
-            "ix_anomaly_data", "id", "detected_at", "service_id", "final_anomaly_score"
-        ),
+        Index("ix_anomaly_data", "detected_at", "service_id", "final_anomaly_score"),
     )
 
 
@@ -152,7 +149,7 @@ class Incident(Base):
 
     __table_args__: tuple[PrimaryKeyConstraint, Index] = (
         PrimaryKeyConstraint("id"),
-        Index("ix_incident_data", "id", "start_time", "status"),
+        Index("ix_incident_data", "start_time", "status"),
     )
 
 
@@ -181,15 +178,13 @@ class RcaResult(Base):
         DateTime(timezone=True), default=lambda: datetime.now(UTC)
     )
 
-    __table_args__: tuple[PrimaryKeyConstraint, ForeignKeyConstraint, Index] = (
+    __table_args__: tuple[PrimaryKeyConstraint, ForeignKeyConstraint] = (
         PrimaryKeyConstraint("id"),
         ForeignKeyConstraint(
             ["incident_id"],
             ["incidents.id"],
-            ondelete="CASCADE",
             name="fk_rcaResult_incident",
         ),
-        Index("ix_rca_data", "id"),
     )
 
 
@@ -216,8 +211,7 @@ class RemediationAudit(Base):
         ForeignKeyConstraint(
             ["incident_id"],
             ["incidents.id"],
-            ondelete="CASCADE",
             name="fk_remediationAudit_incident",
         ),
-        Index("ix_remediationAudit_data", "id", "incident_id"),
+        Index("ix_remediationAudit_data", "incident_id"),
     )
