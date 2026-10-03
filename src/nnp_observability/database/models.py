@@ -127,17 +127,23 @@ class Incident(Base):
         String(32), default="active"
     )  # active, investigating, mitigating, resolved
     current_stage: Mapped[str] = mapped_column(String(64), default="anomaly_detected")
-    summary: Mapped[str] = mapped_column(Text)
+    summary: Mapped[str | None] = mapped_column(Text)
     confidence_score: Mapped[float] = mapped_column(default=90.0)
-    affected_services: Mapped[dict[str, JSONValue]] = mapped_column(JSON, default=dict)
+    affected_services: Mapped[list[dict[str, JSONValue]]] = mapped_column(
+        JSON, default=dict
+    )
     anomalies_detected: Mapped[int] = mapped_column(default=0)
-    primary_metric_impacted: Mapped[str] = mapped_column(String(64))
+    primary_metric_impacted: Mapped[str | None] = mapped_column(String(64))
     mttd_seconds: Mapped[float] = mapped_column(default=0.0)
     mttr_seconds: Mapped[float | None] = mapped_column()
-    root_cause_service: Mapped[str] = mapped_column(String(128))
-    remediation_action_taken: Mapped[str] = mapped_column(String(256))
-    lifecycle_timeline: Mapped[dict[str, JSONValue]] = mapped_column(JSON, default=dict)
-    operator_comments: Mapped[dict[str, JSONValue]] = mapped_column(JSON, default=dict)
+    root_cause_service: Mapped[str | None] = mapped_column(String(128))
+    remediation_action_taken: Mapped[str | None] = mapped_column(String(256))
+    lifecycle_timeline: Mapped[list[dict[str, JSONValue]]] = mapped_column(
+        JSON, default=dict
+    )
+    operator_comments: Mapped[list[dict[str, JSONValue]]] = mapped_column(
+        JSON, default=dict
+    )
 
     anomalies: Mapped[list["AnomalyEvent"]] = relationship(back_populates="incident")
     rca_results: Mapped[list["RcaResult"]] = relationship(
@@ -170,7 +176,9 @@ class RcaResult(Base):
     log_evidence_score: Mapped[float] = mapped_column(default=0.0)
     fault_signature_score: Mapped[float] = mapped_column(default=0.0)
     evidence_summary: Mapped[str] = mapped_column(Text)
-    evidence_items: Mapped[dict[str, JSONValue]] = mapped_column(JSON, default=dict)
+    evidence_items: Mapped[list[dict[str, JSONValue]]] = mapped_column(
+        JSON, default=dict
+    )
     fault_signature_matched: Mapped[str | None] = mapped_column(String(256))
     lead_lag_relationship: Mapped[str] = mapped_column(String(128))
     confidence: Mapped[float] = mapped_column(default=90.0)
@@ -201,8 +209,11 @@ class RemediationAudit(Base):
     action_type: Mapped[str] = mapped_column(String(64))
     approver: Mapped[str] = mapped_column(String(128), default="SRE On-Call Operator")
     status: Mapped[str] = mapped_column(String(32), default="pending")
-    decision_comment: Mapped[str] = mapped_column(Text)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    decision_comment: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=lambda: datetime.now(UTC)
+    )
+    executed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     verification_status: Mapped[str] = mapped_column(String(64), default="unresolved")
     execution_logs: Mapped[dict[str, JSONValue]] = mapped_column(JSON, default=dict)
 
